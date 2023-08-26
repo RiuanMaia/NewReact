@@ -1,3 +1,4 @@
+"use client"
 import { Square, Circle } from "./components/Geo";
 import { Person } from "./components/Person";
 import { Card } from "./components/Card";
@@ -7,6 +8,8 @@ import { Rating } from "./components/Rating";
 import { Rating2 } from "./components/Rating2";
 import { TableList } from "./components/TableList";
 import { students } from "./data/students";
+import { CustomButton } from "./components/CustomButton";
+import { FormEvent } from "react";
 
 export const getWeekDay = (today: Date) => {
   return new Intl.DateTimeFormat("pt-BR", {weekday: "long" }).format(new Date(today));
@@ -148,4 +151,62 @@ const pageTable = () => {
   );
 }
 
-export default pageTable;
+//export default pageTable;
+
+//events
+
+const pageClick = () => {
+  // function handleClick() {
+  //   alert("funcionou.")
+  // }
+  return (
+    <div className="w-screen h-screen flex justify-center items-center">
+      <button onClick={() => {
+        alert("funcionou")
+      }} className="p-3 bg-blue-700 text-white rounded-md">Clique aqui</button>
+    </div>
+  );
+}
+
+//export default pageClick;
+
+const pageEventProp = () => {
+
+  const handleClick1 = () => {
+    alert("HandleClick1");
+  }
+  const handleClick2 = () => {
+    alert("HandleClick2");
+  }
+  const handleClick3 = () => {
+    alert("HandleClick3");
+  }
+  return (
+    <div className="flex w-screen h-screen justify-center items-center">   
+      <CustomButton label="Clique 1" onClick={handleClick1}/>
+      <CustomButton label="Clique 2" onClick={handleClick2}/>
+      <CustomButton label="Clique 3" onClick={handleClick3}/>
+    </div>
+  );
+}
+//export default pageEventProp;
+
+const pageForm = () => {
+
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    alert("opa, mandando!");
+
+  }
+  return (
+    <div className="flex flex-col h-screen w-screen justify-center items-center bg-gray-500">
+      <h1>Form de login</h1>
+      <form onSubmit={handleFormSubmit} className="flex flex-col">
+        <input type="text"></input>
+        <input type="submit" value="enviar"></input>
+
+      </form>
+    </div>
+  );
+}
+export default pageForm;
