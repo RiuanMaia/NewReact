@@ -9,7 +9,7 @@ import { Rating2 } from "./components/Rating2";
 import { TableList } from "./components/TableList";
 import { students } from "./data/students";
 import { CustomButton } from "./components/CustomButton";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 
 export const getWeekDay = (today: Date) => {
   return new Intl.DateTimeFormat("pt-BR", {weekday: "long" }).format(new Date(today));
@@ -209,4 +209,126 @@ const pageForm = () => {
     </div>
   );
 }
-export default pageForm;
+//export default pageForm;
+
+const State = () => {
+  const [count, setCount] = useState<number>(0);
+  const handleClickButton = () => {
+    setCount(count + 1);
+  }
+  const handleClickButton2 = () => {
+    setCount(count - 1);
+  }
+  return(
+    <div className="h-screen w-screen flex flex-col justify-center items-center">
+      <p>{count}</p>
+      <button onClick={handleClickButton} className="p-3 bg-blue-400 border border-gray-400 rounded">+ 1</button>
+      <button onClick={handleClickButton2} className="p-3 bg-blue-400 border border-gray-400 rounded">- 1</button>
+    </div>
+  );
+}
+//export default State;
+
+const State2 = () => {
+
+  const [showSecret, setShowSecret] = useState<boolean>(false);
+  const handleClickButton = () => {
+    // if(showSecret) setShowSecret(false);
+    // else if(!showSecret) setShowSecret(true);
+    setShowSecret(!showSecret);
+  }
+  
+  return(
+    <div className="h-screen w-screen flex flex-col justify-center items-center">
+    
+      <button onClick={handleClickButton} className="p-3 bg-blue-400 border border-gray-400 rounded">{!showSecret ? "Mostrar" : "Ocultar"} área secreta</button>
+
+      {showSecret && 
+      <div className="p-3 bg-blue-300 rounded-md mt-3">Área Secreta</div>
+      } 
+     
+    </div>
+  );
+}
+
+//export default State2;
+
+const State3 = () => {
+  const [name, setName ] = useState<string>("");
+  const handleBtnClick = () => {
+    alert(name);
+  }
+  return (
+    <div className="flex flex-col h-screen w-screen justify-center items-center">
+      <input type="text" className="border border-black p-3 text-xl text-black rounded-full" placeholder="digite seu nome" value={name} onChange={e => setName(e.target.value)} />
+      <button onClick={handleBtnClick} className="p-3 border border-gray-400 bg-blue-400 rounded-full mt-3 font-bold">Mostrar valor do campo</button>
+      <p>seu nome é: {name}</p>
+    </div>
+  );
+}
+
+//export default State3;
+
+const State4 = () => {
+  const [count, setCount] = useState<number>(0);
+
+  const handleBtnClick = () => {
+    setCount(count + 2);
+  }
+
+  return (
+    <div className="flex flex-col h-screen w-screen justify-center items-center">
+      <p>{count}</p>
+      <button onClick={handleBtnClick} className="p-3 rounded-md bg-blue-700">+2</button>
+    </div>
+  );
+}
+//export default State4;
+
+//state updater, fluxo, saber quando ela vai ser modificada realmente.
+
+
+
+const State5 = () => {
+  const [count, setCount] = useState(0);
+
+  const handleBtnClick = () => {
+    setCount(count + 2);
+    setCount(c => c + 2);
+    setCount(c => c + 2);
+  }
+  return (
+    <div className="flex flex-col h-screen w-screen justify-center items-center">
+      <p>{count}</p>
+      <button onClick={handleBtnClick} className="bg-blue-700 text-white p-3 rounded-md">+2</button>
+    </div>
+  );
+}
+
+//export default State5;
+
+const State6 = () => {
+
+  type Person = {
+    name: string,
+    lastName: string
+  }
+
+  const [fullName, setFullName] = useState<Person>( {name: "Riuan", lastName: "Maia" } );
+  return (
+    <div className="flex flex-col w-screen h-screen justify-center items-center">
+      <input className="text-black rounded-md p-3 text-3xl mb-3" placeholder="digite seu nome" value = {fullName.name} onChange={e => setFullName({...fullName, name: e.target.value})}>
+
+      </input>
+
+      <input type="text" className="text-black rounded-md p-3 text-3xl" placeholder="digite seu sobrenome" value = {fullName.lastName} onChange={e => setFullName({...fullName, lastName: e.target.value})}>
+      
+      </input>
+      <p>Seu nome completo é: {fullName.name} {fullName.lastName}</p>
+    </div>
+  );
+}
+
+export default State6;
+
+
