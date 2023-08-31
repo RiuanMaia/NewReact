@@ -10,6 +10,7 @@ import { TableList } from "./components/TableList";
 import { students } from "./data/students";
 import { CustomButton } from "./components/CustomButton";
 import { FormEvent, useState } from "react";
+import { TodoItem } from "./types/TodoItem";
 
 export const getWeekDay = (today: Date) => {
   return new Intl.DateTimeFormat("pt-BR", {weekday: "long" }).format(new Date(today));
@@ -329,6 +330,109 @@ const State6 = () => {
   );
 }
 
-export default State6;
+//export default State6;
 
+/*
+//está foi uma experiência para desenvolvimento de minha lógica, no começo estava tudo dando certo, porém, eu acabei me esquecendo do
+//checked, e isso depois que já tinha estruturado todo o código. Mudando assim minha visão e distorcendo a resolução.
+//vou deixar este código comentado e irei seguir o video do professor e refletir onde eu errei.
+const StateArray7 = () => {
+
+  const [TodoItem, setTodoItem] = useState<TodoItem>({TodoItem: "", checked: false});
+  const [TodoList, setTodoList] = useState<TodoItem[]>([{TodoItem: "", checked: false}]);
+  let index = 0;
+
+  const handleDltButtonClick = () => {
+    index--;
+  }
+  const handleBtnClick = () => {
+    index++;
+    const newItem = TodoItem;
+    const newTodoList: TodoItem[] = [TodoItem];
+    setTodoList(newTodoList);
+    setTodoItem({TodoItem: "", checked: false});
+    
+  }
+  return (
+    <>
+    
+    <div className="grid grid-cols-3 gap-2">  
+      <div></div>
+      <div className="flex flex-col mr-3">
+      <h1 className="text-4xl">ToDo List</h1>
+        <div className="flex mr-3">
+          <input className="text-black p-3 mt-2 border border-gray-800 rounded-md text-xl" placeholder="digite sua meta" value={TodoList[index].TodoItem} onChange={e => setTodoItem({TodoItem: e.target.value, checked: false})} >
+          
+          </input>
+          <button className="bg-blue-400 rounded-md text-white text-md px-2 py-1 ml-2" onClick={handleBtnClick}>Adicionar</button>
+        </div>
+        <ul className="flex flex-col content-start mt-3">
+          {TodoList.map((item, index) => 
+            <li>- {TodoList[index].TodoItem}. <button onClick={handleDltButtonClick}> [delete] </button></li>
+          )}
+        </ul>
+      </div>
+      <div></div>
+      
+
+    </div>
+    </>
+  );
+}
+
+export default StateArray7;
+*/
+
+const StateArray8 = () => {
+
+  const [TodoList, setTodoList] = useState<TodoItem[]>([
+    
+  ]);
+
+  const [TodoItem, setTodoItem] = useState("");
+
+  
+
+  const handleDltButtonClick = () => {
+  }
+  const handleAddBtn = () => { 
+    //const newItem: TodoItem = TodoItem;
+    //const newTodoList: TodoItem[] = [...TodoList, newItem];
+    //setTodoList(newTodoList);
+    if(TodoItem.trim() !== "") {
+    setTodoList([...TodoList, {label:TodoItem, checked:false}]);
+    setTodoItem("");
+    }  
+  }
+
+  const handleDelBtn = (index:number)=> {
+    setTodoList(TodoList.filter((item, key) => key !== index));
+    //não entendi o todo dessa lógica, mas vou seguir
+  }
+
+  return (
+    <div className="grid grid-cols-3 gap-1 bg-">
+      <div></div>
+      <div>
+        <h1 className="text-4xl mt-3">Todo List</h1>
+        <div className="flex mr-3"> 
+          <input className="text-black p-3 mt-2 border border-gray-800 rounded-md text-xl" placeholder="digite sua meta" value={TodoItem} onChange={e => setTodoItem(e.target.value)} >
+          </input>
+          <button className="bg-blue-400 rounded-md text-white px-3 ml-2" onClick={handleAddBtn}>Adicionar</button>
+        </div>
+        <p className="border border-gray-400 bg-blue-300 rounded-md p-2 mt-2 inline-block">{TodoList.length} item na lista</p>
+        <ul className="flex flex-col mt-3">
+          {TodoList.map((item, index)=> 
+            <li key={index}> - {item.label} <button className="rounded-md bg-red-300 px-3 mb-2" onClick={() => handleDelBtn(index)}>  delete  </button></li>
+          )}
+        </ul>
+
+      </div>
+      <div></div>
+    </div>
+  );
+}
+
+
+export default StateArray8;
 
