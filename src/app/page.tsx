@@ -11,6 +11,10 @@ import { students } from "./data/students";
 import { CustomButton } from "./components/CustomButton";
 import { FormEvent, useState } from "react";
 import { TodoItem } from "./types/TodoItem";
+import { photoList } from "./data/PhotoList";
+import { PhotoItem } from "./components/PhotoItem";
+import { Modal } from "./components/Modal";
+
 
 export const getWeekDay = (today: Date) => {
   return new Intl.DateTimeFormat("pt-BR", {weekday: "long" }).format(new Date(today));
@@ -409,6 +413,12 @@ const StateArray8 = () => {
     setTodoList(TodoList.filter((item, key) => key !== index));
     //não entendi o todo dessa lógica, mas vou seguir
   }
+  const toogleCheck = (index: number) => {
+    let newTodoList = [...TodoList];
+    newTodoList[index].checked = !newTodoList[index].checked;
+    setTodoList(newTodoList)
+    
+  }
 
   return (
     <div className="grid grid-cols-3 gap-1 bg-">
@@ -422,8 +432,9 @@ const StateArray8 = () => {
         </div>
         <p className="border border-gray-400 bg-blue-300 rounded-md p-2 mt-2 inline-block">{TodoList.length} item na lista</p>
         <ul className="flex flex-col mt-3">
-          {TodoList.map((item, index)=> 
-            <li key={index}> - {item.label} <button className="rounded-md bg-red-300 px-3 mb-2" onClick={() => handleDelBtn(index)}>  delete  </button></li>
+          {TodoList.map((item, index)=>
+          
+            <li className="flex items-center content-start mt-2" key={index}> <input onClick={() => toogleCheck(index)}type="checkbox" checked= {item.checked} className="w-6 h-6 rounded-full mr-2"></input> - {item.label} <button className="rounded-md bg-red-300 px-3 ml-2" onClick={() => handleDelBtn(index)}>  delete  </button></li>
           )}
         </ul>
 
@@ -434,5 +445,41 @@ const StateArray8 = () => {
 }
 
 
-export default StateArray8;
+//export default StateArray8;
 
+const StateGallery = () => {
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [imageOfModal, setImageOfModal] = useState("");
+
+  const openModal = (id: number) => {
+    const photo = photoList.find(item => item.id === id);
+    if(photo) {
+      setImageOfModal(photo.url);
+      setShowModal(true);
+    }
+  }
+  const closeModal = () => {
+    setShowModal(false);
+  }
+    return (
+    <div className="mx-2">
+      <h1 className="text-center text-3xl font-bold my-10">Fotos Intergalacticas</h1>
+      <section className="container max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {photoList.map(item => (
+          <PhotoItem
+          key={item.id}
+          photo={item}
+          onClick={() => openModal(item.id)}
+
+          />
+        ))}
+      </section>
+
+      {showModal &&
+        <Modal image={imageOfModal} closeModal={closeModal}/>
+      }
+    </div>
+  );
+}
+
+export default StateGallery;
