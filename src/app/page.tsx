@@ -491,5 +491,7 @@ const StateQuiz = () => {
       <Quiz />
     </div>
   );
+  //desafio 04/09/2023: não assista a aula quiz 1, e repita o que estudou em 03/09/2023. 
+  //ele montou a estrutura, criou o type e inseriu os dados. 
 }
 export default StateQuiz;
