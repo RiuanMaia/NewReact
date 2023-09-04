@@ -14,6 +14,7 @@ import { TodoItem } from "./types/TodoItem";
 import { photoList } from "./data/PhotoList";
 import { PhotoItem } from "./components/PhotoItem";
 import { Modal } from "./components/Modal";
+import { Quiz } from "./components/Quiz";
 
 
 export const getWeekDay = (today: Date) => {
@@ -482,4 +483,13 @@ const StateGallery = () => {
   );
 }
 
-export default StateGallery;
+//export default StateGallery;
+
+const StateQuiz = () => {
+  return(
+    <div className="h-screen w-screen flex justify-center items-center bg-blue-300">
+      <Quiz />
+    </div>
+  );
+}
+export default StateQuiz;
