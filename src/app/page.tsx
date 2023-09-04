@@ -9,12 +9,15 @@ import { Rating2 } from "./components/Rating2";
 import { TableList } from "./components/TableList";
 import { students } from "./data/students";
 import { CustomButton } from "./components/CustomButton";
-import { FormEvent, useState } from "react";
+import { FormEvent, use, useState } from "react";
 import { TodoItem } from "./types/TodoItem";
 import { photoList } from "./data/PhotoList";
 import { PhotoItem } from "./components/PhotoItem";
 import { Modal } from "./components/Modal";
 import { Quiz } from "./components/Quiz";
+import { questions } from "./data/questions";
+import { Andada_Pro } from "next/font/google";
+import { QuizResult } from "./components/QuizResult";
 
 
 export const getWeekDay = (today: Date) => {
@@ -486,9 +489,52 @@ const StateGallery = () => {
 //export default StateGallery;
 
 const StateQuiz = () => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const title = "Quiz de culinária";
+  const [answers, setAnswers] = useState<number[]>([]);
+  const [showResult, setShowResult] = useState(true);
+
+  const loadNextQuestion = () => {
+    if(questions[currentQuestion + 1]){
+      setCurrentQuestion(currentQuestion + 1)
+    } else {
+      setShowResult(true);
+    }
+  }
+  const handleAnswered = (answer: number) => {
+      setAnswers([...answers, answer]);
+      loadNextQuestion();  
+  }
+  const origin = () => {
+    setCurrentQuestion(0);
+    setShowResult(false);
+    setAnswers([]);
+  }
   return(
-    <div className="h-screen w-screen flex justify-center items-center bg-blue-300">
-      <Quiz />
+    <div className="h-screen w-full flex justify-center items-center bg-blue-300">
+      <div className="p-1 w-full max-w-md bg-white rounded-md text-black shadow shadow-gray-700">
+        
+        
+        <div className="text-xl text-bold border-b-2 border-gray-300 p-2">
+          {title}
+          </div>
+        {!showResult &&
+        <div className="border-b-2 border-gray-300">
+          <Quiz question={questions[currentQuestion]} count={currentQuestion + 1} onAnswer={handleAnswered}/>
+        </div>
+        } {showResult &&
+          <QuizResult  answers={answers}/>
+        }
+        {!showResult &&
+        <div className="text-center">
+          {currentQuestion + 1} de {questions.length} pergunta{questions.length === 1 ? "" : "s"}
+        </div>
+        } {showResult &&
+            <button onClick={origin} className=" flex bg-blue-700 w-full justify-center border border-blue-400 rounded-md text-xl hover:opacity-60 text-white">Reiniciar</button>    
+        }
+        
+
+      </div>
     </div>
   );
   //desafio 04/09/2023: não assista a aula quiz 1, e repita o que estudou em 03/09/2023. 
