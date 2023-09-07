@@ -1,5 +1,4 @@
 "use client"
-import { Square, Circle } from "./components/Geo";
 import { Person } from "./components/Person";
 import { Card } from "./components/Card";
 import { NewCard } from "./components/NewCard";
@@ -9,7 +8,7 @@ import { Rating2 } from "./components/Rating2";
 import { TableList } from "./components/TableList";
 import { students } from "./data/students";
 import { CustomButton } from "./components/CustomButton";
-import { FormEvent, use, useState } from "react";
+import { FormEvent, use, useEffect, useState } from "react";
 import { TodoItem } from "./types/TodoItem";
 import { photoList } from "./data/PhotoList";
 import { PhotoItem } from "./components/PhotoItem";
@@ -18,6 +17,8 @@ import { Quiz } from "./components/Quiz";
 import { questions } from "./data/questions";
 import { Andada_Pro } from "next/font/google";
 import { QuizResult } from "./components/QuizResult";
+import { VideoPlayer } from "./components/VideoPlayer";
+import { Square } from "./components/Square";
 
 
 export const getWeekDay = (today: Date) => {
@@ -540,4 +541,104 @@ const StateQuiz = () => {
   //desafio 04/09/2023: não assista a aula quiz 1, e repita o que estudou em 03/09/2023. 
   //ele montou a estrutura, criou o type e inseriu os dados. 
 }
-export default StateQuiz;
+//export default StateQuiz;
+
+const pageEffect = () => {
+
+  const [name, setName] = useState<string>("Arthur");
+ 
+  useEffect(()=>{
+    alert("olá " + name), [name]
+  })
+
+  return (
+    <div className="">
+      seu nome é {name}.
+      <button onClick={() => setName("Riuan")} className="border-blue-400 bg-blue-300 text-white rounded-md p-3 m-3">Change Name</button>
+    </div>
+  );
+}
+
+//export default pageEffect;
+
+const realEffect = () => {
+  const [playing, setPlaying] = useState(false);
+  return (
+    <div className="">
+      <div className="border border-white p-3 mb-4">
+        <p className="text-2xl mb-3 text-blue-400">{playing ? "RODANDO" : "PAUSADO"}</p>
+        <button className="bg-blue-300 text-white rounded-md p-2" onClick={()=>setPlaying(!playing)}>Play/Pause</button>
+      </div>
+      <VideoPlayer src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" isPlaying={playing}/>
+
+    </div>
+  );
+}
+//export default realEffect;
+
+const effectCleanUp = () => {
+  const [showSquare, setShowSquare] = useState(false);
+  return (
+    <div className="">
+      <button onClick={() => setShowSquare(!showSquare)}className="px-3 py-1 bg-blue-400 border border-blue-500 rounded-md m-3">Mostrar/Ocultar</button>
+      {showSquare &&
+      <Square/>
+      }
+      
+    </div>
+    //lembrando que podemos utilizar o array de depêndencias vazio para ocorrer o "efeito" apenas na renderizaçãi inicial, e podemos utilizar isso para fazer uma requisição fetch de uma API não causando uma "requisição" infinita de dados.
+  );
+}
+
+//export default effectCleanUp;
+
+const Reducer = () => {
+  type Item = {
+    id: number,
+    text: string,
+    done: boolean
+  }
+  //formas de organizar states que são arrays:
+  const [list, setList] = useState<Item[]>([]);
+
+  //adicionar item
+  const addNewItem = (text: string) => {
+    setList([...list, {
+      id: list.length,
+      text,
+      done: false
+    }]);
+  }
+  //editar item de texto dentro do Array
+  const editItemText = (id:number, newText: string) => {
+    setList(
+      list.map(t => {
+        if(t.id === id) {
+          t.text = newText;
+        } 
+        return t;
+      }));
+  }
+  //trocar status
+  const toggleStatus = (id:number) => {
+    setList(
+      list.map(t => {
+        if(t.id === id) {
+          t.done = !t.done;
+        } 
+        return t;
+      }));
+  }
+  //remover item
+  const removeItem = (id: number) => {
+    setList(list.filter(t => t.id !== id));
+  }
+
+
+  
+  return (
+    <div className=""></div>
+  );
+}
+
+export default Reducer;
