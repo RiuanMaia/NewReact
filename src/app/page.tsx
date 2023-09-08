@@ -8,7 +8,7 @@ import { Rating2 } from "./components/Rating2";
 import { TableList } from "./components/TableList";
 import { students } from "./data/students";
 import { CustomButton } from "./components/CustomButton";
-import { FormEvent, use, useEffect, useState } from "react";
+import { FormEvent, use, useEffect, useReducer, useState } from "react";
 import { TodoItem } from "./types/TodoItem";
 import { photoList } from "./data/PhotoList";
 import { PhotoItem } from "./components/PhotoItem";
@@ -19,6 +19,8 @@ import { Andada_Pro } from "next/font/google";
 import { QuizResult } from "./components/QuizResult";
 import { VideoPlayer } from "./components/VideoPlayer";
 import { Square } from "./components/Square";
+import { Item } from "./types/Item";
+import { listReducer } from "./reducers/listReducer";
 
 
 export const getWeekDay = (today: Date) => {
@@ -593,51 +595,144 @@ const effectCleanUp = () => {
 //export default effectCleanUp;
 
 const Reducer = () => {
-  type Item = {
-    id: number,
-    text: string,
-    done: boolean
-  }
-  //formas de organizar states que são arrays:
-  const [list, setList] = useState<Item[]>([]);
-
-  //adicionar item
-  const addNewItem = (text: string) => {
-    setList([...list, {
-      id: list.length,
-      text,
-      done: false
-    }]);
-  }
-  //editar item de texto dentro do Array
-  const editItemText = (id:number, newText: string) => {
-    setList(
-      list.map(t => {
-        if(t.id === id) {
-          t.text = newText;
-        } 
-        return t;
-      }));
-  }
-  //trocar status
-  const toggleStatus = (id:number) => {
-    setList(
-      list.map(t => {
-        if(t.id === id) {
-          t.done = !t.done;
-        } 
-        return t;
-      }));
-  }
-  //remover item
-  const removeItem = (id: number) => {
-    setList(list.filter(t => t.id !== id));
-  }
-
-
   
+
+  //formas de organizar states que são arrays:
+  //const [list, setList] = useState<Item[]>([]);
+
+
+  // //adicionar item
+  // const addNewItem = (text: string) => {
+  //   setList([...list, {
+  //     id: list.length,
+  //     text,
+  //     done: false
+  //   }]);
+  // }
+  // //editar item de texto dentro do Array
+  // const editItemText = (id:number, newText: string) => {
+  //   setList(
+  //     list.map(t => {
+  //       if(t.id === id) {
+  //         t.text = newText;
+  //       } 
+  //       return t;
+  //     }));
+  // }
+  // //trocar status
+  // const toggleStatus = (id:number) => {
+  //   setList(
+  //     list.map(t => {
+  //       if(t.id === id) {
+  //         t.done = !t.done;
+  //       } 
+  //       return t;
+  //     }));
+  // }
+  // //remover item
+  // const removeItem = (id: number) => {
+  //   setList(list.filter(t => t.id !== id));
+  // }
+
+  //disparch vai executar uma ação
+  //reducer
+  // const handleAddClick = () => {
+  //   dispatch({
+  //     type: "add",
+  //     payload: {
+  //       text: "New Item"
+  //     }
+  //   })
+
+  //   dispatch({
+  //     type: "toggle",
+  //     payload: {
+  //       id: 3
+  //     }
+  //   })
+
+  //   dispatch({
+  //     type: "editText",
+  //     payload: {id: 2, newText: "Bora lá"}
+  //   })
+  // }
+  //Nota: eu tentei fortemente, e quase quase deu certo, mimha lógica está evoluindo bastante.
+  //porém tive que pegar dicas com o professor.
+  const [list, dispatch] = useReducer(listReducer, []);
+  const [addField, setAddField] = useState("");
+
+  const handleAddButton = () => {
+    if(addField.trim() === "") return false;
+    dispatch({
+      type: "add",
+      payload: {
+        text: addField.trim()
+      }
+    })
+    setAddField("")
+  }
+  const handleEditButton = (id: number, text: string) => {
+    //forma alternativa até mais utilizavel:
+    const item = list.find(t => t.id === id);
+    if(!item) return false;
+
+    const newText = window.prompt("Editar Tarefa", item.text);
+    if(!newText || newText === "") return false;
+
+    dispatch({
+      type: "editText",
+      payload: { id, newText}
+    })
+    
+    
+    // dispatch({
+    //   type: "editText",
+    //   payload: {
+    //     id: id,
+    //     newText: text
+    //   }
+    // })
+    //setAddField("")
+  }
+  const handleRemoveButton = (id: number) => {
+    dispatch({
+      type: "remove",
+      payload: {
+        id: id
+      }
+    })
+  }
+
+  const handleCheckButton = (id: number) => {
+    dispatch ({
+      type: "toggle",
+      payload: {
+        id: id
+      }
+    })
+  }
   return (
-    <div className=""></div>
+    <div className="container mx-auto">
+      <h1 className="text-4xl text-center my-4">Lista de Tarefas</h1>
+      <div className="bg-gray-900 flex rounded-md border border-gray-400 p-4 my-4 mx-auto max-w-2xl">
+        <input className="outline-none flex-1 border border-white p-3 bg-black text-white rounded-md" placeholder="digite um item" type="text" value={addField} onChange={e => setAddField(e.target.value)}/>
+        <button onClick={handleAddButton} className=" py-2 px-3 mx-4">Adicionar</button>
+      </div>
+      <ul className="max-w-2xl mx-auto">
+        {list.map(item => (
+          <li className="flex p-3 my-1 border-b border-gray-400 items-center"
+          key={item.id}
+          >
+            <input type="checkbox" className="w-6 h-6 mr-4" checked={item.done} onClick={() => handleCheckButton(item.id)} />
+            <p className="text-lg flex-1 ">{item.text}</p>
+            <button onClick={() => handleEditButton(item.id, addField)}  className="bg-blue-200 rounded-md px-1 mx-2 text-black hover:opacity-90">Editar</button>
+            <button onClick={() => handleRemoveButton(item.id)} className="bg-red-200 rounded-md px-1 mx-2 text-black hover:opacity-90">Excluir</button>
+          </li>
+        ))}
+      </ul>
+
+     
+    </div>
   );
 }
 
