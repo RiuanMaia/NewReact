@@ -21,6 +21,8 @@ import { VideoPlayer } from "./components/VideoPlayer";
 import { Square } from "./components/Square";
 import { Item } from "./types/Item";
 import { listReducer } from "./reducers/listReducer";
+import { Header } from "./components/Header";
+import { CountContext, CountInitialData } from "./contexts/CountContext";
 
 
 export const getWeekDay = (today: Date) => {
@@ -736,4 +738,17 @@ const Reducer = () => {
   );
 }
 
-export default Reducer;
+//export default Reducer;
+
+const Context = () => {
+//criando o provider:
+  return (
+    <div className="container mx-auto">
+      <CountContext.Provider value={CountInitialData}>
+      <Header />
+      </CountContext.Provider>
+      
+    </div>
+  );
+}
+export default Context;
