@@ -8,7 +8,7 @@ import { Rating2 } from "./components/Rating2";
 import { TableList } from "./components/TableList";
 import { students } from "./data/students";
 import { CustomButton } from "./components/CustomButton";
-import { FormEvent, use, useEffect, useReducer, useState } from "react";
+import { FormEvent, use, useContext, useEffect, useReducer, useState } from "react";
 import { TodoItem } from "./types/TodoItem";
 import { photoList } from "./data/PhotoList";
 import { PhotoItem } from "./components/PhotoItem";
@@ -22,7 +22,7 @@ import { Square } from "./components/Square";
 import { Item } from "./types/Item";
 import { listReducer } from "./reducers/listReducer";
 import { Header } from "./components/Header";
-import { CountContext } from "./contexts/CountContext";
+import { CountContext, CountProvider } from "./contexts/CountContext";
 
 
 export const getWeekDay = (today: Date) => {
@@ -742,14 +742,11 @@ const Reducer = () => {
 
 const Context = () => {
 //criando o provider:
-
-  const [onlineCount, setOnlineCount] = useState(42);
   return (
     <div className="container mx-auto">
-      <CountContext.Provider value={{onlineCount, setOnlineCount}}>
-      <Header />
-      </CountContext.Provider>
-      
+      <CountProvider>
+        <Header />
+      </CountProvider>  
     </div>
   );
 }
