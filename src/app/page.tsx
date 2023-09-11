@@ -23,6 +23,8 @@ import { Item } from "./types/Item";
 import { listReducer } from "./reducers/listReducer";
 import { Header } from "./components/Header";
 import { CountContext, CountProvider } from "./contexts/CountContext";
+import { UserLoged } from "./components/UserLoged";
+import { ULogedProvider } from "./contexts/UserLogedContext";
 
 
 export const getWeekDay = (today: Date) => {
@@ -750,4 +752,17 @@ const Context = () => {
     </div>
   );
 }
-export default Context;
+//export default Context;
+
+const UsingContext = () => {
+  return (
+    <div className="container mx-auto">
+      <ULogedProvider>
+        <UserLoged />
+      </ULogedProvider>
+      
+    </div>
+  );
+}
+
+export default UsingContext;

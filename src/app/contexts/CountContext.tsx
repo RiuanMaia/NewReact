@@ -13,7 +13,7 @@ type Props = {
     children: ReactNode;
 }
 export const CountProvider = ({children}: Props) => {
-    const [onlineCount, setOnlineCount] = useState(36);
+    const [onlineCount, setOnlineCount] = useState(0);
     return(
         <CountContext.Provider value={{onlineCount, setOnlineCount}}>
             {children}
