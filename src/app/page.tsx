@@ -22,7 +22,7 @@ import { Square } from "./components/Square";
 import { Item } from "./types/Item";
 import { listReducer } from "./reducers/listReducer";
 import { Header } from "./components/Header";
-import { CountContext, CountInitialData } from "./contexts/CountContext";
+import { CountContext } from "./contexts/CountContext";
 
 
 export const getWeekDay = (today: Date) => {
@@ -742,9 +742,11 @@ const Reducer = () => {
 
 const Context = () => {
 //criando o provider:
+
+  const [onlineCount, setOnlineCount] = useState(42);
   return (
     <div className="container mx-auto">
-      <CountContext.Provider value={CountInitialData}>
+      <CountContext.Provider value={{onlineCount, setOnlineCount}}>
       <Header />
       </CountContext.Provider>
       
