@@ -25,6 +25,8 @@ import { Header } from "./components/Header";
 import { CountContext, CountProvider } from "./contexts/CountContext";
 import { UserLoged } from "./components/UserLoged";
 import { ULogedProvider } from "./contexts/UserLogedContext";
+import { HeaderPosts } from "./components/HeaderPosts";
+import { HPostProvider } from "./contexts/HeaderPostsContext";
 
 
 export const getWeekDay = (today: Date) => {
@@ -754,7 +756,7 @@ const Context = () => {
 }
 //export default Context;
 
-const UsingContext = () => {
+const UsingContextULogged = () => {
   return (
     <div className="container mx-auto">
       <ULogedProvider>
@@ -765,4 +767,17 @@ const UsingContext = () => {
   );
 }
 
-export default UsingContext;
+//export default UsingContextULogged;
+
+const UsingContextPost = () => {
+  //lista de id, títulos e corpos, transformar em posts, podemos criar um array com states utilizando essas informações e utilizar o contexto da mesma forma. como não precisamos alterar, podemos apenas fazer um map do array dentro do state e repassar em forma de ul, li no Header.
+  return (
+    <div className="container mx-auto">
+      <HPostProvider>
+        <HeaderPosts/>
+      </HPostProvider>
+      
+    </div>
+  );
+}
+export default UsingContextPost;
