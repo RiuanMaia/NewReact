@@ -27,6 +27,11 @@ import { UserLoged } from "./components/UserLoged";
 import { ULogedProvider } from "./contexts/UserLogedContext";
 import { HeaderPosts } from "./components/HeaderPosts";
 import { HPostProvider } from "./contexts/HeaderPostsContext";
+import { HeaderPost } from "./components/HeaderPost";
+import { FooterPost } from "./components/FooterPost";
+import { PostProvider } from "./contexts/PostContext";
+import { PostList } from "./components/PostList";
+
 
 
 export const getWeekDay = (today: Date) => {
@@ -780,4 +785,20 @@ const UsingContextPost = () => {
     </div>
   );
 }
-export default UsingContextPost;
+//export default UsingContextPost;
+
+const UsingContextPostArea = () => {
+  //criar dois input, um input text e um textarea, criar um state (array) que vai armazenar esses valores juntamente de um id, em um objeto, e os exibir em outro componente. A maior questão é como criar mais objetos e os injetar no array. Na verdade podemos usar o button "postar" para fazer essa infusão a partir do setArray do próprio state. Precisamos apenas criar o Context para poder usar nos demais componentes.
+  return (
+    <PostProvider>
+      <div className="flex flex-col justify-center items-center bg-indigo-300 w-screen h-screen">
+        <div className="bg-white flex flex-col shadow shadow-gray-500 rounded-md border border-gray-400 text-black p-4">
+        <HeaderPost/>
+        <PostList />
+        <FooterPost />
+        </div>
+      </div>
+    </PostProvider>
+  );
+}
+export default UsingContextPostArea;
